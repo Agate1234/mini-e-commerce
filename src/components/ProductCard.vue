@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 import { computed } from 'vue'
 import type { Product } from '@/types/product'
 import { useFavorites } from '@/composables/useFavorites'
@@ -10,7 +11,9 @@ const props = defineProps<{
 const { isFavorite, toggleFavorite } = useFavorites()
 
 const formattedPrice = computed(() =>
-  new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(props.product.price),
+  new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+    props.product.price,
+  ),
 )
 
 const categoryLabel = computed(() =>
@@ -21,6 +24,7 @@ const categoryLabel = computed(() =>
 )
 
 const ratingLabel = computed(() => props.product.rating.toFixed(1))
+
 </script>
 
 <template>
@@ -28,7 +32,12 @@ const ratingLabel = computed(() => props.product.rating.toFixed(1))
     class="flex flex-col overflow-hidden rounded-md border border-black/10 bg-white transition-colors hover:border-primary/40"
   >
     <div class="relative flex aspect-square items-center justify-center bg-[#f5f3ee] p-6">
-      <img :src="product.thumbnail" :alt="product.title" loading="lazy" class="max-h-full max-w-full object-contain" />
+      <img
+        :src="product.thumbnail"
+        :alt="product.title"
+        loading="lazy"
+        class="max-h-full max-w-full object-contain"
+      />
 
       <button
         type="button"
@@ -42,7 +51,9 @@ const ratingLabel = computed(() => props.product.rating.toFixed(1))
           viewBox="0 0 24 24"
           stroke-width="1.8"
           class="h-5 w-5"
-          :class="isFavorite(product.id) ? 'fill-red-500 stroke-red-500' : 'fill-none stroke-neutral-500'"
+          :class="
+            isFavorite(product.id) ? 'fill-red-500 stroke-red-500' : 'fill-none stroke-neutral-500'
+          "
         >
           <path
             stroke-linecap="round"
@@ -54,14 +65,17 @@ const ratingLabel = computed(() => props.product.rating.toFixed(1))
     </div>
 
     <div class="flex flex-1 flex-col gap-2 p-4">
-      <h3 class="min-h-[2.7em] font-serif text-base leading-snug text-neutral-900">{{ product.title }}</h3>
+      <h3 class="min-h-[2.7em] font-serif text-base leading-snug text-neutral-900">
+        {{ product.title }}
+      </h3>
       <p class="text-lg font-semibold text-primary">{{ formattedPrice }}</p>
 
       <dl class="text-sm text-neutral-500">
-        <div class="flex justify-between py-0.5">
+        <div class="hidden justify-between py-0.5 lg:flex">
           <dt>Kategori</dt>
           <dd class="font-medium text-neutral-700">{{ categoryLabel }}</dd>
         </div>
+
         <div class="flex justify-between py-0.5">
           <dt>Rating</dt>
           <dd class="flex items-center gap-1 font-medium text-neutral-700">

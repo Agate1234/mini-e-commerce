@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # mini e commerce
 
 This template should help get you started developing with Vue 3 in Vite.
@@ -52,3 +53,6 @@ npm run test:unit
 ```sh
 npm run lint
 ```
+=======
+# mini-e-commerce
+>>>>>>> 022dc9a634dfb4c343bf09317aa52701d9dc8a50

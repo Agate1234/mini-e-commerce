@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 import type { Category } from '@/types/product'
 
 defineProps<{
@@ -13,6 +14,7 @@ const emit = defineEmits<{
 function handleChange(event: Event) {
   emit('update:modelValue', (event.target as HTMLSelectElement).value)
 }
+
 </script>
 
 <template>

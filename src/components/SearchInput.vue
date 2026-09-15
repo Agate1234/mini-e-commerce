@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 const props = withDefaults(
   defineProps<{
     modelValue: string
@@ -27,6 +28,7 @@ function handleInput(event: Event) {
     emit('search', value)
   }, props.debounceMs)
 }
+
 </script>
 
 <template>

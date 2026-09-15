@@ -20,7 +20,7 @@ export function useProducts() {
     try {
       categories.value = await getCategories()
     } catch {
-      // dropdown kategori cukup dikosongkan kalau gagal, bukan blocker utama halaman
+      //
     }
   }
 
