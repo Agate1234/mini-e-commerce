@@ -12,11 +12,15 @@ const { favorites } = useFavorites()
         <RouterLink to="/" class="font-serif text-lg text-neutral-900">MiniShop</RouterLink>
         <div class="flex items-center gap-6 text-sm font-medium text-neutral-600">
           <RouterLink to="/" class="hover:text-primary" active-class="text-primary">Products</RouterLink>
-          <RouterLink to="/favorites" class="flex items-center gap-1.5 hover:text-primary" active-class="text-primary">
+          <RouterLink
+            to="/favorites"
+            class="flex items-center gap-1.5 hover:text-[#1f4d3d]"
+            active-class="text-[#1f4d3d]"
+          >
             Favorit
             <span
-              v-if="favorites.length > 0"
-              class="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-xs text-white"
+              class="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#1f4d3d] px-1 text-xs text-white"
+              :class="favorites.length > 0 ? 'visible' : 'invisible'"
             >
               {{ favorites.length }}
             </span>
