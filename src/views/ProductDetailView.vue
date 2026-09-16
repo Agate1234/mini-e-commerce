@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useProduct } from '@/composables/useProduct'
@@ -23,11 +24,12 @@ const categoryLabel = computed(() =>
         .join(' ')
     : '',
 )
+
 </script>
 
 <template>
   <section class="mx-auto max-w-5xl px-6 py-10">
-    <button type="button" @click="router.back()" class="mb-6 text-sm font-medium text-neutral-500 hover:text-primary">
+    <button type="button" @click="router.back()" class="mb-6 text-sm font-medium text-neutral-500 hover:text-[#1f4d3d]">
       ← Kembali
     </button>
 
@@ -47,7 +49,7 @@ const categoryLabel = computed(() =>
             type="button"
             @click="activeImage = image"
             class="h-16 w-16 shrink-0 rounded border p-1"
-            :class="activeImage === image ? 'border-primary' : 'border-black/10'"
+            :class="activeImage === image ? 'border-[#1f4d3d]' : 'border-black/10'"
           >
             <img :src="image" :alt="product.title" class="h-full w-full object-contain" />
           </button>
@@ -56,11 +58,11 @@ const categoryLabel = computed(() =>
 
       <div class="flex flex-col gap-4">
         <div>
-          <p class="text-sm font-medium uppercase tracking-wide text-primary">{{ categoryLabel }}</p>
+          <p class="text-sm font-medium uppercase tracking-wide text-[#1f4d3d]">{{ categoryLabel }}</p>
           <h1 class="font-serif text-2xl text-neutral-900">{{ product.title }}</h1>
         </div>
 
-        <p class="text-2xl font-semibold text-primary">{{ formattedPrice }}</p>
+        <p class="text-2xl font-semibold text-[#1f4d3d]">{{ formattedPrice }}</p>
 
         <div class="flex flex-wrap items-center gap-4 text-sm text-neutral-600">
           <span class="flex items-center gap-1">
@@ -79,7 +81,7 @@ const categoryLabel = computed(() =>
           :class="
             isFavorite(product.id)
               ? 'border-red-500 text-red-500 hover:bg-red-500 hover:text-white'
-              : 'border-primary text-primary hover:bg-primary hover:text-white'
+              : 'border-[#1f4d3d] text-[#1f4d3d] hover:bg-[#1f4d3d] hover:text-white'
           "
         >
           {{ isFavorite(product.id) ? '♥ Hapus dari Favorit' : '♡ Tambah ke Favorit' }}
