@@ -1,54 +1,119 @@
-# mini e commerce
+# Mini E-Commerce
 
-This template should help get you started developing with Vue 3 in Vite.
+Aplikasi katalog produk sederhana yang dibangun dengan Vue 3 + TypeScript, menampilkan daftar produk dari REST API publik [DummyJSON](https://dummyjson.com/docs/products), lengkap dengan pencarian, filter kategori, pagination, halaman detail, dan fitur favorit.
 
-## Recommended IDE Setup
+## Installation
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Recommended Browser Setup
-
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
+```bash
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+## Development
 
-```sh
+```bash
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+Aplikasi akan berjalan di `http://localhost:5173`.
 
-```sh
+## Production Build
+
+```bash
 npm run build
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+Hasil build akan tersedia di folder `dist/`.
 
-```sh
-npm run test:unit
+
+## Struktur / Arsitektur Aplikasi
+
+Aplikasi dipisah berlapis, dari data mentah sampai tampilan:
+
+```
+src/
+├── types/            # Interface TypeScript (Product)
+├── services/         # Lapisan API — fetch wrapper + endpoint DummyJSON
+│   ├── api.ts
+│   └── api/
+│       └── product.ts
+├── composables/      # Reusable stateful logic (Vue Composition API)
+│   ├── useFavorites.ts   # Shared/global state (singleton) + localStorage
+│   ├── useProducts.ts    # State halaman list: search, filter, pagination
+│   └── useProduct.ts     # Fetch satu produk (halaman detail)
+├── components/       # View Component
+│   ├── ProductCard.vue
+│   ├── SearchInput.vue
+│   ├── CategoryFilter.vue
+│   ├── Pagination.vue
+│   └── LoadingSkeleton.vue
+├── views/            # Halaman per-route
+│   ├── ProductListView.vue
+│   ├── ProductDetailView.vue
+│   └── FavoritesView.vue
+├── router/           # Konfigurasi Vue Router
+├── App.vue           # Root layout + navigasi
+├── main.ts
+└── style.css
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+**Alur data:** `View` memanggil `Composable` untuk mengelola state dan logic. Selanjutnya, `Composable` memanggil `Service` untuk melakukan API call ke DummyJSON. Data yang diperoleh dari API dikembalikan ke `Composable` untuk memperbarui state, kemudian ditampilkan kembali oleh `View` melalui komponen-komponen presentational.
 
-```sh
-npm run lint
+Komponen yang berada di folder `components/` bersifat presentational. Komponen tersebut hanya menerima data melalui `props` dan mengirimkan interaksi pengguna melalui event `emit`. Komponen tidak melakukan fetch data secara langsung.
+
+```text
+View
+  ↓
+Composable
+  ↓
+Service
+  ↓
+DummyJSON API
+  ↓
+Service
+  ↓
+Composable State
+  ↓
+View / Components
 ```
+
+Favorit sengaja dibuat sebagai composable singleton (state di level module, bukan di dalam komponen), supaya status favorit otomatis sinkron di semua tempat (card di list, halaman detail, halaman favorit, badge di navbar) tanpa perlu state management library terpisah.
+
+## Library yang Digunakan
+
+- **Vue 3** (Composition API, `<script setup>`)
+- **TypeScript**
+- **Vite** — build tool & dev server
+- **Vue Router** — routing SPA
+- **Tailwind CSS v4** — styling utility-first (via `@tailwindcss/vite`)
+- **Axios**
+- **DummyJSON** — sumber data produk (REST API publik)
+
+## Fitur yang Berhasil Diselesaikan
+
+- Daftar produk: gambar, nama, harga, kategori, rating, tombol "Lihat Detail"
+- Pencarian produk dengan debounce (400ms)
+- Filter berdasarkan kategori
+- Pagination dengan nomor halaman, tombol Prev/Next, dan lompat langsung ke halaman tertentu lewat klik "…" (jump to page)
+- Halaman detail produk (galeri gambar, deskripsi, stok, rating)
+- Fitur favorit: toggle dari card maupun halaman detail, disimpan di `localStorage`, halaman Favorit terpisah, badge jumlah favorit di navbar
+- Desain responsive
+
+## Fitur yang Belum Diselesaikan
+
+- Sorting produk (harga termurah/termahal, rating tertinggi)
+- Unit test
+
+## Known Issues / Limitations
+
+- DummyJSON tidak mendukung kombinasi filter search + category langsung di satu endpoint. Solusinya, saat search dan filter kategori aktif bersamaan, aplikasi mengambil sampai 100 hasil pencarian lalu memfilter & memaginasi di sisi client — kalau hasil pencarian asli lebih dari 100 item, sebagian kemungkinan tidak ikut terfilter.
+- Favorit disimpan sebagai snapshot lengkap data produk bukan cuma ID di `localStorage`. Konsekuensinya: halaman Favorit tidak perlu fetch ulang ke API (lebih cepat), tapi datanya bisa jadi tidak up-to-date kalau harga/stok produk berubah di sumbernya. Favorit juga hanya tersimpan per-browser, bukan per-akun, dan akan hilang kalau data browser dibersihkan.
+- Belum ada penanganan khusus untuk route yang tidak dikenal (404).
+
+## Penggunaan AI Coding Assistant
+
+Proyek ini dikembangkan dengan bantuan **Claude** sebagai AI coding assistant, digunakan untuk:
+
+- Penulisan kode composable useFavorites (singleton)
+- Setup dan konfigurasi styling Tailwind CSS
+- Membantu proses debugging serta memberikan saran perbaikan kode
+- Review kode untuk meningkatkan keterbacaan, struktur, dan maintainability
