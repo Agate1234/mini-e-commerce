@@ -11,9 +11,7 @@ const props = defineProps<{
 const { isFavorite, toggleFavorite } = useFavorites()
 
 const formattedPrice = computed(() =>
-  new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
-    props.product.price,
-  ),
+  new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(props.product.price),
 )
 
 const categoryLabel = computed(() =>
@@ -29,15 +27,10 @@ const ratingLabel = computed(() => props.product.rating.toFixed(1))
 
 <template>
   <article
-    class="flex flex-col overflow-hidden rounded-md border border-black/10 bg-white transition-colors hover:border-primary/40"
+    class="flex flex-col overflow-hidden rounded-md border border-black/10 bg-white transition-colors hover:border-[#1f4d3d]/40"
   >
     <div class="relative flex aspect-square items-center justify-center bg-[#f5f3ee] p-6">
-      <img
-        :src="product.thumbnail"
-        :alt="product.title"
-        loading="lazy"
-        class="max-h-full max-w-full object-contain"
-      />
+      <img :src="product.thumbnail" :alt="product.title" loading="lazy" class="max-h-full max-w-full object-contain" />
 
       <button
         type="button"
@@ -51,9 +44,7 @@ const ratingLabel = computed(() => props.product.rating.toFixed(1))
           viewBox="0 0 24 24"
           stroke-width="1.8"
           class="h-5 w-5"
-          :class="
-            isFavorite(product.id) ? 'fill-red-500 stroke-red-500' : 'fill-none stroke-neutral-500'
-          "
+          :class="isFavorite(product.id) ? 'fill-red-500 stroke-red-500' : 'fill-none stroke-neutral-500'"
         >
           <path
             stroke-linecap="round"
@@ -65,17 +56,14 @@ const ratingLabel = computed(() => props.product.rating.toFixed(1))
     </div>
 
     <div class="flex flex-1 flex-col gap-2 p-4">
-      <h3 class="min-h-[2.7em] font-serif text-base leading-snug text-neutral-900">
-        {{ product.title }}
-      </h3>
-      <p class="text-lg font-semibold text-primary">{{ formattedPrice }}</p>
+      <h3 class="min-h-[2.7em] font-serif text-base leading-snug text-neutral-900">{{ product.title }}</h3>
+      <p class="text-lg font-semibold text-[#1f4d3d]">{{ formattedPrice }}</p>
 
       <dl class="text-sm text-neutral-500">
-        <div class="hidden justify-between py-0.5 lg:flex">
+        <div class="flex justify-between py-0.5">
           <dt>Kategori</dt>
           <dd class="font-medium text-neutral-700">{{ categoryLabel }}</dd>
         </div>
-
         <div class="flex justify-between py-0.5">
           <dt>Rating</dt>
           <dd class="flex items-center gap-1 font-medium text-neutral-700">
@@ -87,7 +75,7 @@ const ratingLabel = computed(() => props.product.rating.toFixed(1))
 
       <RouterLink
         :to="`/product/${product.id}`"
-        class="mt-auto rounded border border-primary py-2 text-center text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-white"
+        class="mt-auto rounded border border-[#1f4d3d] py-2 text-center text-sm font-semibold text-[#1f4d3d] transition-colors hover:bg-[#1f4d3d] hover:text-white"
       >
         Lihat Detail
       </RouterLink>

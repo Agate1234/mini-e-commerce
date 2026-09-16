@@ -1,9 +1,10 @@
 <script setup lang="ts">
+
 import { onMounted, watch } from 'vue'
 import ProductCard from '@/components/ProductCard.vue'
 import SearchInput from '@/components/SearchInput.vue'
 import CategoryFilter from '@/components/CategoryFilter.vue'
-import LoadingSpinner from '@/components/LoadingSpinner.vue'
+import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
 import Pagination from '@/components/Pagination.vue'
 import { useProducts } from '@/composables/useProducts'
 
@@ -37,6 +38,7 @@ onMounted(() => {
   loadCategories()
   fetchProducts(1)
 })
+
 </script>
 
 <template>
@@ -56,13 +58,13 @@ onMounted(() => {
       <button
         type="button"
         @click="fetchProducts(currentPage)"
-        class="rounded border border-primary px-4 py-2 font-semibold text-primary hover:bg-primary hover:text-white"
+        class="rounded border border-[#1f4d3d] px-4 py-2 font-semibold text-[#1f4d3d] hover:bg-[#1f4d3d] hover:text-white"
       >
         Coba Lagi
       </button>
     </p>
 
-    <LoadingSpinner v-else-if="loading" />
+    <LoadingSkeleton v-else-if="loading" />
 
     <p v-else-if="products.length === 0" class="py-12 text-center text-neutral-500">
       Produk tidak ditemukan untuk pencarian ini.
